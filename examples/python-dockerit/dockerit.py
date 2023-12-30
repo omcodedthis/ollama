@@ -12,6 +12,9 @@ with s.post('http://localhost:11434/api/generate', json={'model': 'dockerit', 'p
         output = output +j["response"]
 output = output[output.find("---start")+9:output.find("---end")-1]
 f = io.BytesIO(bytes(output, 'utf-8'))
+
+# builds image
 client.images.build(fileobj=f, tag=imageName)
+# runs the container
 container = client.containers.run(imageName, detach=True)
 print("Container named", container.name, " started with id: ",container.id)
